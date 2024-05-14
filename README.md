@@ -10,6 +10,16 @@ Antes de iniciar o programa, é necessário inciar o serviço de banco de dados.
 $ docker compose up -d
 ```
 
+Se preferir, use o make:
+
+```sh
+$ make up
+```
+
+```sh
+$ make down
+```
+
 O comando acima inicializará o banco de dados. Durante a inicialização, o diretório `docker-entrypoint-initdb.d` será copiado para o diretório homônimo dentro do servidor do banco de dados, garatindo a criação do banco de dados e da tabela para armazenamento dos dados referentes às odens de compra.
 
 Para executar o programa, através do terminal acesse o diretório raiz deste projeto e execute os comandos a seguir:

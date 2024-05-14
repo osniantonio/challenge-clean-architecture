@@ -83,13 +83,23 @@ func openChannel(config *configs.Config) (*amqp.Channel, error) {
 	return ch, nil
 }
 
+// func startWebServer(config *configs.Config, db *sql.DB, dispatcher *events.EventDispatcher) {
+// 	webserver := webserver.NewWebServer(config.WebServerPort)
+// 	webOrderHandler := NewWebOrderHandler(db, dispatcher)
+// 	webserver.AddHandler("/order", webOrderHandler.Create)
+// 	fmt.Println("Starting web server on port", config.WebServerPort)
+// 	go webserver.Start()
+// }
+
 func startWebServer(config *configs.Config, db *sql.DB, dispatcher *events.EventDispatcher) {
-	server := webserver.NewWebServer(config.WebServerPort)
-	handler := NewWebOrderHandler(db, dispatcher)
-	server.Router.Get("/order", handler.List)
-	server.Router.Post("/order", handler.Create)
-	fmt.Printf("Starting web server on port %s\n", config.WebServerPort)
-	go server.Start()
+	webserver := webserver.NewWebServer(config.WebServerPort)
+	webOrderHandler := NewWebOrderHandler(db, dispatcher)
+
+	webserver.Router.Get("/order", webOrderHandler.List)
+	webserver.Router.Post("/order", webOrderHandler.Create)
+
+	fmt.Println("Starting web server on port", config.WebServerPort)
+	go webserver.Start()
 }
 
 func startGRPCServer(config *configs.Config, createOrderUseCase *usecase.CreateOrderUseCase, listOrdersUseCase *usecase.ListOrdersUseCase) error {
